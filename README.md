@@ -22,7 +22,9 @@ find top_level_folder/ -name '*.tsv' | cpio -pdm new_folder_name/
 ```
 find . -type f -name "contigs.fa" -printf "/%P\n" | while read FILE ; do DIR=$(dirname "$FILE" );\cp ."$FILE" "../fastas_for_emmtyper""$DIR".fa;done
 ```
-Note also in this example, you can test it by adding echo immediately before cp
+Note also in this example, you can test it by adding echo immediately before cp.
+
+From:  https://askubuntu.com/questions/746860/rename-a-file-to-parent-directorys-name-in-terminal
 
 ## Nextflow
 
