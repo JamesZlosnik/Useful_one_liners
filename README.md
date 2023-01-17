@@ -15,4 +15,19 @@ From: https://stackoverflow.com/questions/15617016/copy-all-files-with-a-certain
 
 ```
 find top_level_folder/ -name '*.tsv' | cpio -pdm new_folder_name/
+
 ```
+3. Find files of a certain name and copy them to a new folder using the name of the folder they are in as the name of the file (useful for examples such as the one below where a pipeline puts out a generic name, say for a fasta file)
+
+```
+find . -type f -name "contigs.fa" -printf "/%P\n" | while read FILE ; do DIR=$(dirname "$FILE" );\cp ."$FILE" "../fastas_for_emmtyper""$DIR".fa;done
+```
+Note also in this example, you can test it by adding echo immediately before cp
+
+## Nextflow
+
+## General bioinformatics packages
+
+### Seqkit
+
+
