@@ -31,6 +31,7 @@ From:  https://askubuntu.com/questions/746860/rename-a-file-to-parent-directorys
 ```
 find $PWD -name '*.fa' -type f -print0 | while IFS= read -r -d '' file; do echo -e "$(basename "$file" .fa)\t$file"; done > input.tab
 ```
+Note, you can modify this as necessary to change the type of file or the amount of the file name removed to form the sample name in the first column
 
 ## Nextflow
 
