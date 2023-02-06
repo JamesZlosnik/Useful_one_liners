@@ -26,6 +26,10 @@ Note also in this example, you can test it by adding echo immediately before cp.
 
 From:  https://askubuntu.com/questions/746860/rename-a-file-to-parent-directorys-name-in-terminal
 
+4. Generate a input tsv from a list of files of a given type (.fa used here) and their paths in multiple subdirectories:
+
+```find $PWD -name '*.fa' -type f -print0 | while IFS= read -r -d '' file; do echo -e "$(basename "$file" .fa)\t$file"; done > input.tab```
+
 ## Nextflow
 
 ## General bioinformatics packages
