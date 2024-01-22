@@ -1,0 +1,78 @@
+import argparse
+from Bio import SeqIO
+import csv
+import os
+
+# Function to calculate metrics from a FASTA file
+def calculate_metrics(fasta_file):
+    # Initialize lists to store metrics and non-ACGT samples
+    metrics = []
+    non_actg_samples = []
+
+    # Parse the FASTA file
+    for record in SeqIO.parse(fasta_file, "fasta"):
+        # Convert sequence to uppercase
+        sequence = str(record.seq).upper()
+        # Calculate total length of the sequence
+        total_length = len(sequence)
+        # Initialize counts for each base
+        counts = {"A": 0, "C": 0, "G": 0, "T": 0, "N": 0, "Other": 0}
+
+        # Count each base in the sequence
+        for base in sequence:
+            if base in counts:
+                counts[base] += 1
+            elif base == 'N':
+                counts["N"] += 1
+            else:
+                counts["Other"] += 1
+
+        # Append metrics for the current sample to the list
+        metrics.append({
+            "Sample": record.id,
+            "Total Length": total_length,
+            "%A": counts["A"] / total_length * 100,
+            "%C": counts["C"] / total_length * 100,
+            "%G": counts["G"] / total_length * 100,
+            "%T": counts["T"] / total_length * 100,
+            "%N": counts["N"] / total_length * 100,
+            "%Other": counts["Other"] / total_length * 100
+        })
+
+        # If the sample contains non-ACGT bases, add it to the list
+        if counts["N"] > 0 or counts["Other"] > 0:
+            non_actg_samples.append((record.id, sequence))
+
+    return metrics, non_actg_samples
+
+# Function to write metrics to a CSV file
+def write_to_csv(metrics, csv_file):
+    with open(csv_file, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=metrics[0].keys())
+        writer.writeheader()
+        writer.writerows(metrics)
+
+# Function to write samples with non-ACGT bases to a text file
+def write_non_actg_samples(non_actg_samples, txt_file):
+    with open(txt_file, "w") as f:
+        for sample_id, sequence in non_actg_samples:
+            f.write(f"Sample ID: {sample_id}\n")
+            f.write(f"Sequence: {sequence}\n\n")
+
+# Create an argument parser
+parser = argparse.ArgumentParser(description='Calculate metrics from a FASTA file.')
+parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
+parser.add_argument('input_fasta', help='Input FASTA file')
+parser.add_argument('output_dir', help='Output directory')
+parser.add_argument('prefix', help='Prefix for output file names')
+
+# Parse command line arguments
+args = parser.parse_args()
+
+# Calculate metrics and write them to the CSV file
+metrics, non_actg_samples = calculate_metrics(args.input_fasta)
+csv_file = os.path.join(args.output_dir, args.prefix + "_metrics.csv")
+txt_file = os.path.join(args.output_dir, args.prefix + "_non_actg_samples.txt")
+write_to_csv(metrics, csv_file)
+# Write samples with non-ACGT bases to the text file
+write_non_actg_samples(non_actg_samples, txt_file)
