@@ -33,6 +33,15 @@ find $PWD -name '*.fa' -type f -print0 | while IFS= read -r -d '' file; do echo 
 ```
 Note, you can modify this as necessary to change the type of file or the amount of the file name removed to form the sample name in the first column
 
+## Scripts
+
+The below scripts may be of use:
+
+| Script | Comment | Source |
+|--------|---------|--------|
+|Fasta parser | Python script to parse a multi fasta file and report composition as well as produce file listing entries that contain non-ATGC bases | made by Co-pilot|
+
+
 ## Nextflow
 
 ## General bioinformatics packages
