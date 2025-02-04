@@ -33,6 +33,14 @@ find $PWD -name '*.fa' -type f -print0 | while IFS= read -r -d '' file; do echo 
 ```
 Note, you can modify this as necessary to change the type of file or the amount of the file name removed to form the sample name in the first column
 
+5. Check a sample list (samples.txt) against a directory of paired end fastq files to find missing samples:
+
+```
+while read sample; do
+  ls data/"$sample"*.fastq.gz >/dev/null 2>&1 || echo "$sample is missing"
+done < samples.txt
+```
+
 ## Scripts
 
 The below scripts may be of use:
