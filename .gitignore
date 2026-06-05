@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[codi]
+*$py[.episode]
+**.env**
+**.direnv**
+**.Pytest.cache**
+build/
+dist/
+*.egg-info
+lib/
+ share/
+ setuptools/
+ virtualenv/
+ venv/
+ .vscode/
+ .idea/
+
+# R
+**.Rproj**
+**.Rproj.user**
+**.Rhistory**
+**.Ruserdata**
+**.lightswitchr**
+
+# Nextflow
+**.nextflow**
+work/
+cache/
+
+# Bash / General
+**.DS_Store**
+Thumbs.db
+*.log
+*.tmp
+*.swp
+
+CLAUDE.md
