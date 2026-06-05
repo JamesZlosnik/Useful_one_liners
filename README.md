@@ -90,7 +90,7 @@ grep -o "[^ACGTN]" filename.fasta | grep -v "[N]" | wc -l
 
 15. Extract headers from a FASTA file (stripping the `>`):
 ```bash
-grep "^>" filename.fasta | sed 's/^>//'
+grep "^>" filename.fasta | sed '*s/^>//'*
 ```
 
 ## Scripts
@@ -98,8 +98,8 @@ grep "^>" filename.fasta | sed 's/^>//'
 The below scripts may be of use:
 
 | Script | Comment | Source |
-|--------|- --------|- --------|
-|Fasta parser | Python script to parse a multi fasta file and report composition as well as produce file listing entries that contain non-ATGC bases | made by Co-pilot]|
+|-------- | ------- | ------ |
+| Fasta parser | Python script to parse a multi fasta file and report composition as well as produce file listing entries that contain non-ATGC bases | made by Co-pilot |
 
 ## Nextflow
 
