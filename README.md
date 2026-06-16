@@ -20,17 +20,17 @@ find top_level_folder/ -name '*.tsv' | cpio -pdm new_folder_name/
 3. Find files of a certain name and copy them to a new folder using the name of the folder they are in as the name of the file (useful for examples such as the one below where a pipeline puts out a generic name, say for a fasta file)
 
 ```
-find . -type f -name "contigs.Fa" -printf "/%P\n]" | while read FILE ; do DIR=$( dirname "$FILE" );\cp ." $FILE" "../fastas_for_emmtyper""$DIR".fa*;done
+find . -type f -name "contigs.fa" -printf "/%P\n" | while read FILE ; do DIR=$( dirname "$FILE" );\cp "./$FILE" "../fastas_for_emmtyper/$DIR.fa";done
 ```
 
  Note also in this example, you can test it by adding echo immediately before cp.
 
 From:  https://askubuntu.com/questions/746860/rename-a-file-to-parent-directorys-name-in-terminal
 
-4. Generate a input tsv from a list of files of a given type (.Fa used here) and their paths in multiple subdirectories:
+4. Generate a input tsv from a list of files of a given type (.fa used here) and their paths in multiple subdirectories:
 
 ```
-find $PWD -name '*.Fa' -type f -print0 | while IFS= read -r -d '' file\; do echo -e "$(basename "$file" .Fa)\t$file}"; done > input.tab
+find $PWD -name '*.fa' -type f -print0 | while IFS= read -r -d '' file; do echo -e "$(basename "$file" .fa)\t$file"; done > input.tab
 ```
 
  Note, you can modify this as necessary to change the type of file or the amount of the file name removed to form the sample name in the first column
@@ -38,14 +38,14 @@ find $PWD -name '*.Fa' -type f -print0 | while IFS= read -r -d '' file\; do echo
 5. Check a sample list (samples.txt) against a directory of paired end fastq files to find missing samples:
 
 ```
-while read sample\; do
-  ls data/"$sample"*.fastq.gz >#/dev/null 2>&1 || echo "$sample is missing"
+while read sample; do
+  ls data/"$sample"*.fastq.gz > /dev/null 2>&1 || echo "$sample is missing"
 done < samples.txt
 ```
 
 6. Count total reads in a FASTQ file:
 ```bash
-grep -c "^@" filename.fastq
+awk 'NR % 4 == 0' filename.fastq | wc -l
 ```
 
 7. Count the number of sequences in a FASTA file:
@@ -65,32 +65,32 @@ grep -l "SequenceID" *.fastq
 
 10. Check for non-standard bases (anything not A, C, G, T, or N) in a sequence:
 ```bash
-grep "[^ACGTN]" filename.fasta
+grep -v "^>" filename.fasta | grep -i "[^ACGTN]"
 ```
 
 11. Count "N" bases in a FASTA file:
 ```bash
-grep -o "[N]" filename.fasta | wc -l
+grep -v "^>" filename.fasta | grep -o "[N]" | wc -l
 ```
 
 12. Count occurrences of 'G' (or any other base) in a FASTA:
 ```bash
-grep -o "[G]" filename.fasta | wc -l
+grep -v "^>" filename.fasta | grep -o "[G]" | wc -l
 ```
 
 13. List IDs of sequences containing non-standard bases:
 ```bash
-grep "[^ACGTN]" filename.fasta | cut -d' ' -f1 | sort -u
+grep -v "^>" filename.fasta | grep "[^ACGTN]" | cut -d' ' -f1 | sort -u
 ```
 
 14. Count total number of "Other" bases (anything not A, C, G, T, or N):
 ```bash
-grep -o "[^ACGTN]" filename.fasta | grep -v "[N]" | wc -l
+grep -v "^>" filename.fasta | grep -o "[^ACGTN]" | wc -l
 ```
 
 15. Extract headers from a FASTA file (stripping the `>`):
 ```bash
-grep "^>" filename.fasta | sed '*s/^>//'*
+grep "^>" filename.fasta | sed 's/^>//'
 ```
 
 ## Scripts
